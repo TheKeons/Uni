@@ -7,7 +7,7 @@ int main(){
     scanf("%d", &num);
 
     printf( "%d i hexadesimal er : %x\n", num, num);
-    printf( "%d i ASCII er : %c\n", num), num;
+    printf( "%d i ASCII er : %c\n", num, num);
 
     return 0;
 }
