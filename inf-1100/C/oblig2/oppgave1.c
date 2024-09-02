@@ -3,7 +3,7 @@
 void triangle(char tegn, int antall_linjer);
 
 int main(){
-    triangle('*', 10);
+    triangle('#', 10);
 }
 
 void triangle(char tegn, int antall_linjer){

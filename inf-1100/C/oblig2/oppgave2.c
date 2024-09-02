@@ -1,11 +1,13 @@
 #include <stdio.h>
 
+void convert(char bokstav);
+
 int main(){
     char bokstav;
+    convert('d');
+}
 
-    printf("Skriv en bokstav: ");
-    scanf("%c", &bokstav);
-
+void convert(char bokstav){
     if (bokstav >= 65 && bokstav <= 90){
         bokstav = bokstav + 32;
         printf("%c\n", bokstav);

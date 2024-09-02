@@ -5,7 +5,7 @@ int tversumm(char tall[], int len);
 
 int main(){
     // siden strings er arrays av char velger jeg å skrive tallet som string sånn at jeg kan splitte detloope gjennom 
-    char tall[] = "1111"; 
+    char tall[] = "57396"; 
     int len = strlen(tall);
     printf("Tversummen av %s er %d\n", tall, tversumm(tall, len));
 

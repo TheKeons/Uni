@@ -3,14 +3,12 @@
 void sjekk_tall(int start, int slutt, int faktor);
 
 int main(){
-    sjekk_tall(1, 10, 5);
+    sjekk_tall(1, 10, 2);
 }
 
 void sjekk_tall(int start, int slutt, int faktor){
     int i;
     
-
-
     for (i = start; i <= slutt; i++){
         if (i % 2 > 0){
             if (i % faktor == 0){
