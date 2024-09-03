@@ -5,10 +5,10 @@ int main(){
     int meny;
     float new_value;
     char * måleenhet;
-    int loop = 1;
+    int loop ;
     int i;
 
-    while (i = loop, i = 1){
+    while (1){
         printf("Lets convert some numbers!\nHvor mange kilo vil du konvertere?\n");
         scanf("%f", &kilo);
 
@@ -34,9 +34,14 @@ int main(){
             printf("%.1f kilo tilsvarer %f %s\n", kilo, new_value, måleenhet);
             printf("Ønsker du å kjøre en gang til? 1 for ja alle andre tegn for nei\n");
             scanf("%d", &loop);
+
+            if (loop != 1){
+                break;
+            }
         }
         else {
             printf("Velg tall fra 1 til 3\n");
         }
+
     }
 }
