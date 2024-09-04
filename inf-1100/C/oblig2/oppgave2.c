@@ -4,7 +4,7 @@ void convert(char bokstav);
 
 int main(){
     char bokstav;
-    convert('d');
+    convert('X');
 }
 
 void convert(char bokstav){

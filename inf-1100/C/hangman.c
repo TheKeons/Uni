@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-char* randomWord();
+char randomWord();
 
 int main() {
 
@@ -10,14 +10,15 @@ int main() {
 
 }
 
-char* randomWord() {
-    char wordList[9][10] = {"apple", "banana", "grape","orange", "lemon","kiwi", "pineapple", "strawberry", "blueberry"};
+char randomWord() {
+    char wordList[9][10] = {"apple", "banana", "grape", "orange", "lemon", "kiwi", "pineapple", "strawberry", "blueberry"};
 
     srand(time(NULL));
 
     int length = sizeof(wordList)/sizeof(wordList[0]);
     int random =  rand() % length + 1;
-    char* word = wordList[random];
+    char word[10];
+    printf(word, "%s", wordList(random));
 
     int i;
 

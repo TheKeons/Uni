@@ -27,12 +27,12 @@ int main(){
             }
 
             else if (meny == 3){
-                new_value == kilo * 5000;
+                new_value = kilo * 5000.0;
                 måleenhet = "Karat";
             }
 
-            printf("%.1f kilo tilsvarer %f %s\n", kilo, new_value, måleenhet);
-            printf("Ønsker du å kjøre en gang til? 1 for ja alle andre tegn for nei\n");
+            printf("%.1f kilo tilsvarer %.2f %s\n", kilo, new_value, måleenhet);
+            printf("Ønsker du å kjøre en gang til? 1 for ja alle andre tall for nei\n");
             scanf("%d", &loop);
 
             if (loop != 1){
