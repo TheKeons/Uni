@@ -14,5 +14,5 @@ int main () {
     slik som i linje 6, fordi jeg ikke ska endre stringen.
     Det er heller ingen grunn til å prøve å endre på pekeren slik i det orginale programet når man kan finne det man leter ette ved bruk av indexer.
     Når man skal finne det siste elementet av arrayen er det også viktig å ta lengden - 1 fordi indexer starter på 0.
-    Jeg valgte også å skrive lengden og print funksjonene på en linje bare fordi.
+    Jeg valgte også å skrive lengden og print funksjonene på en linje bare fordi. (Hvis man mener at ? ikke er siste bokstaven i stringen så tar man - 2 i lengden)
 */

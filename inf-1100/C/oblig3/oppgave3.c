@@ -18,7 +18,7 @@ void flipString(char *string){
 }
 
 int main () {
-    char string[20] = "A string";
+    char string[20] = "tseb e navyeK";
     flipString(string);
     printf("%s\n", string);
 
