@@ -3,16 +3,16 @@
 
 void flipString(char *string){
     int length = strlen(string);
-    int startIndex = 0;
+    int startIndex = 0; 
     int endIndex = length - 1;
     char temp;
 
     while (startIndex < endIndex){
-        temp = string[startIndex];
+        temp = string[startIndex]; //Bytter bokstavene ved bruk av temp variabel
         string[startIndex] = string[endIndex];
         string[endIndex] = temp;
 
-        startIndex++;
+        startIndex++; // Flytter startindexen opp og endindexen ned slik at jeg kan bytte de riktige variablene
         endIndex--;
     }
 }
