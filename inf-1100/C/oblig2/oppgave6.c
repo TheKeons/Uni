@@ -20,7 +20,6 @@ int tversumm(char tall[], int len){
     int tverrsummen = 0;
     char ny_tall[5];
     int ny_len;
-
     for (i = 0; i < len; i++){
         tverrsummen = tverrsummen + (tall[i] - '0'); // gjør hver char om til int og legger de sammen
     }
