@@ -15,20 +15,18 @@ typedef struct medlemmer {
 }medlemmer_t;
 
 void write_files(medlemmer_t *medlemer, FILE *txt, FILE *bin){
-
     txt = fopen("medlemer.txt", "w");
-    bin = fopen("medlemer.bin", "wb");
-
-
-
+    
     for (int i = 0; i < medlemer->antall; i++){
-        fprintf(txt, "%s %d\n", medlemer->personer[i].navn, medlemer->personer[i].alder);
-        
+        fprintf(txt, "%s %d\n", medlemer->personer[i].navn, medlemer->personer[i].alder); 
     }
+    fclose(txt);
+
+    bin = fopen("medlemer.bin", "wb");
     fwrite(medlemer, sizeof(medlemmer_t), 1, bin);
 
     fclose(bin);
-    fclose(txt);
+    
 }
 
 void read_files(medlemmer_t *medlemer, FILE *txt, FILE *bin){
