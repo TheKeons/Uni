@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "lexer_preprocessor.h"
+#include "../inc/lexer_preprocessor.h" 
 
 char *read_file(char *source_file) {
   char *buffer;
