@@ -7,11 +7,11 @@ typedef struct stack Stack;
 
 // stack operations
 
-int pop(Stack *stack); // returns the top of stack and removes it from stack
+char *pop(Stack *stack); // returns the top of stack and removes it from stack
 
-void push(Stack *stack, int value); // adds to top of stack
+void push(Stack *stack, char*value); // adds to top of stack
 
-int top(Stack *stack);  // returns value on tho of stack
+char *top(Stack *stack);  // returns value on tho of stack
 
 void print_top(Stack *stack);
 
@@ -26,6 +26,18 @@ int is_empty(Stack *stack); // is the stack full
 
 // 8INF operations
 
+void sum(Stack *stack); // pops two numbers from the stack and pushes the sum
 
+void differance(Stack *stack); // pops two nummbers from stack and pushes the diferance
+
+void multible(Stack *stack);    // pops two numbers from stack and pushes the multible
+
+void quotient(Stack *stack);    // pops two numbers from stack and pushes the quotient
+
+void modulus(Stack *stack);     // pops two numbers from stack and pushes the modelus
+
+void is_equal(Stack *stack);    // pops two numbers from stack and pushes 1 if equal and 0 if not
+
+void is_greater_than(Stack *stack);     // pops two numbers from stack and pushes 1 if greater than and 0 if not
 
 #endif 

@@ -16,7 +16,7 @@ example `3 2 .-` will push the result `1` to the stack; not `-1`.
 * `.+` pops two numbers from the stack and pushes their sum
 * `.-` pops two numbers from the stack and pushes their difference
 * `.*` pops two numbers from the stack and pushes their multiple
-* `.\` pops two numbers from the stack and pushes the quotient of the second
+* `./` pops two numbers from the stack and pushes the quotient of the second
   divided by the first.
 * `.mod` pops two numbers from the stack and pushes the remainder of the second
   divided by the first.
@@ -40,4 +40,3 @@ example `3 2 .-` will push the result `1` to the stack; not `-1`.
 ### I/O operations
 * `.print` pop a word from the stack and print it to terminal
 * `.newline` output a newline character to terminal; does not alter the stack.
-
