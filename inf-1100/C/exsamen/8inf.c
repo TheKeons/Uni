@@ -1,165 +1,176 @@
+#include "8inf.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "8inf.h"
 
 #include "inc/lexer_preprocessor.h"
-
-
 
 char **program;
 
 struct stack {
-  char* arr[MAXWORDS];
+  char *arr[MAXWORDS];
   int top_index;
 };
 
-
 // Stack functions
 
-void initialize(Stack *stack){
-  stack->top_index = -1;
-}
+void initialize(Stack *stack) { stack->top_index = -1; }
 
-int is_full(Stack *stack){
-  if (stack->top_index == (MAXWORDS-1)){
+int is_full(Stack *stack) {
+  if (stack->top_index == (MAXWORDS - 1)) {
     return 1;
-  }
-  else {
+  } else {
     return 0;
   }
 }
 
-int is_empty(Stack *stack){
-  if (stack->top_index <= -1){
+int is_empty(Stack *stack) {
+  if (stack->top_index <= -1) {
     return 1;
-  }
-  else {
+  } else {
     return 0;
   }
 }
 
-char *pop(Stack *stack){
-  if (is_empty(stack)){
+char *top(Stack *stack) { return stack->arr[stack->top_index]; }
+
+char *pop(Stack *stack) {
+  if (is_empty(stack)) {
     printf("Stack underflow\n");
+
     return NULL;
   }
-  char *top = stack->arr[stack->top_index];
-  stack->top_index = stack->top_index - 1;
-  return top;
+  char *top_value = top(stack);            // get the vaule
+  stack->top_index = stack->top_index - 1; // moves the index down one
+  return top_value;
 }
 
-void push(Stack *stack, char *value){
-  printf("%s", value);
-  if (is_full(stack)){
+void push(Stack *stack, char *value) {
+  if (is_full(stack)) {
     printf("Stack overflow\n");
     return;
   }
-
+  //  moves the index up one and adds value to the stack
   stack->top_index = stack->top_index + 1;
   stack->arr[stack->top_index] = value;
 }
 
-char *top(Stack *stack){
-  return stack->arr[stack->top_index];
-}
-
-void dup(Stack *stack){
+// duplicates the top value
+void dup(Stack *stack) {
   char *top_value = top(stack);
   push(stack, top_value);
 }
 
+//  swaps the two top values
+void swap(Stack *stack) {
+  char *a = pop(stack);
+  char *b = pop(stack);
 
-void swap(Stack *stack){
-  char *a;
-  char *b;
-  char *buffer;
-
-  b = stack->arr[stack->top_index];
-  a = stack->arr[stack->top_index - 1];
-
-  buffer = b;
-  b = a;
-  a = buffer;
+  push(stack, a);
+  push(stack, b);
 }
 
 // 8inf functions
 
-void sum(Stack *stack){
+void sum(Stack *stack) { // pops two numbers from the stack and pushes the sum
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
-  char value[100];
-  sprintf(value, "%d", (a+b));
 
-  push(stack, value);
+  char buffer[500];
+  // for loop to work this buffer needs to be big enough, i have not found a
+  // better way of doing this other than guessing. there is no guarantee this
+  // will work for all 8inf programs
 
-} // pops two numbers from the stack and pushes the sum
+  sprintf(buffer, "%d", (a + b));
+  push(stack, buffer);
+}
 
-void differance(Stack *stack){
+void differance(
+    Stack *stack) { // pops two nummbers from stack and pushes the diferance
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
-  char value[100];
-  sprintf(value, "%d", (a-b));
 
-  push(stack, value);
-} // pops two nummbers from stack and pushes the diferance
+  char buffer[100];
+  sprintf(buffer, "%d", (a - b));
 
-void multible(Stack *stack){
+  push(stack, buffer);
+}
+
+void multible(
+    Stack *stack) { // pops two numbers from stack and pushes the multible
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
-  char value[100];
-  sprintf(value, "%d", (a*b));
+  char buffer[100];
+  sprintf(buffer, "%d", (a * b));
 
-  push(stack, value);
-}   // pops two numbers from stack and pushes the multible
+  push(stack, buffer);
+}
 
-void quotient(Stack *stack){
+void quotient(
+    Stack *stack) { // pops two numbers from stack and pushes the quotient
   float b = atoi(pop(stack));
   float a = atoi(pop(stack));
-  char value[100];
-  sprintf(value, "%f", (a/b));
+  char buffer[100];
+  sprintf(buffer, "%f", (a / b));
 
-  push(stack, value);
-}    // pops two numbers from stack and pushes the quotient
+  push(stack, buffer);
+}
 
-void modulus(Stack *stack){
+void modulus(
+    Stack *stack) { // pops two numbers from stack and pushes the modelus
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
-  char value[100];
-  sprintf(value, "%d", (a%b));
+  char buffer[100];
+  sprintf(buffer, "%d", (a % b));
 
-  push(stack, value);
-}    // pops two numbers from stack and pushes the modelus
+  push(stack, buffer);
+}
 
-void is_equal(Stack *stack){
+void is_equal(Stack *stack) { // pops two numbers from stack and pushes 1 if
+                              // equal and 0 if not
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
-  char result[3];
+  char buffer[100];
 
-  if (a == b){
-    sprintf(result, "%d", 1);
-  } else{
-      sprintf(result, "%d", 0);
+  if (a == b) {
+    sprintf(buffer, "%d", 1);
+  } else {
+    sprintf(buffer, "%d", 0);
   }
 
-  push(stack, result);
-  
-}    // pops two numbers from stack and pushes 1 if equal and 0 if not
+  push(stack, buffer);
+}
 
-void is_greater_than(Stack *stack){
+void is_greater_than(Stack *stack) { // pops two numbers from stack and pushes 1
+                                     // if greater than and 0 if not
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
-  char result[3];
+  char buffer[100]; // for some reason if i put the buffer any less than 41 it
+                    // wont work
 
-  if (a >= b){
-    sprintf(result, "%d", 1);
-  } else{
-      sprintf(result, "%d", 0);
+  if (a > b) {
+    sprintf(buffer, "%d", 1);
+  } else {
+    sprintf(buffer, "%d", 0);
   }
-  push(stack, result);
-}     // pops two numbers from stack and pushes 1 if greater than and 0 if not
+  push(stack, buffer);
+}
 
+char **cjump(Stack *stack,
+             char **program) { // pops two numbers. if the second number is not
+                               // `0` the program jumps by the first number
+  int first = atoi(pop(stack));
+  int second = atoi(pop(stack));
 
+  if (second != 0) {
+    // handles the jumping
+    program = program + first;
+
+    // since the for loop plusses one every round we need to counteract that
+    program--;
+  }
+  return program;
+}
 
 int main(int argc, char **argv) {
 
@@ -167,32 +178,32 @@ int main(int argc, char **argv) {
     printf("no program supplied\n");
     return 0;
   }
+
+  // creates the stack
   Stack *stack = malloc(sizeof(Stack));
   initialize(stack);
 
-  // program is an array of strings; the end of the program is signified by a
-  // NULL pointer.
   program = load_program(argv[1]);
 
-  // prints out the words in the program array; uncomment to get an idea of how
-  // the program is stored in memory.
+  // loops though the program
   for (char **pc = program; *pc != NULL; pc++) {
 
-    //printf("program[%i]: %s\n", (int) (pc - program), *pc);
-    if (*pc[0] != '.'){ // if the line is an integer
-      char *string = *pc; 
+    if (*pc[0] != '.') { // if the line is an integer
+      char *string = *pc;
       int length = strlen(string);
 
-      if (*pc[0] == '~'){
-        memmove(string, string+1, length-2);
-        string[length-2] ='\0';
+      if (*pc[0] == '~') {
+        // removes the ~ from the string
+        memmove(string, string + 1, length - 2);
+        string[length - 2] = '\0';
       }
 
       push(stack, string);
     }
 
-    else if (*pc[0] == '.'){
-      if (strcmp(*pc, ".+") == 0){
+    // if soup for handeling the operatos
+    else if (*pc[0] == '.') {
+      if (strcmp(*pc, ".+") == 0) {
         sum(stack);
       }
 
@@ -208,8 +219,12 @@ int main(int argc, char **argv) {
         quotient(stack);
       }
 
-      else if (strcmp(*pc, ".mod") == 0){
+      else if (strcmp(*pc, ".mod") == 0) {
         modulus(stack);
+      }
+
+      else if (strcmp(*pc, ".dup") == 0) {
+        dup(stack);
       }
 
       else if (strcmp(*pc, ".=?") == 0) {
@@ -223,15 +238,22 @@ int main(int argc, char **argv) {
       else if (strcmp(*pc, ".print") == 0) {
         printf("%s", pop(stack));
       }
-      
-      else if (strcmp(*pc, ".newline") == 0){
+
+      else if (strcmp(*pc, ".swap") == 0) {
+        swap(stack);
+      }
+
+      else if (strcmp(*pc, ".newline") == 0) {
         printf("\n");
       }
+
+      else if (strcmp(*pc, ".cjump") == 0) {
+        pc = cjump(stack, pc);
+      } else {
+        printf("Unknow operator\n");
+      }
     }
-
-
   }
-
 
   return 0;
 }

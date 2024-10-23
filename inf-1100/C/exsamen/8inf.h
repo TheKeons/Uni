@@ -23,6 +23,7 @@ int is_full(Stack *stack);  // is the stack full
 
 int is_empty(Stack *stack); // is the stack full
 
+void initialize(Stack *stack);  // initialize the stack
 
 // 8INF operations
 
@@ -39,5 +40,7 @@ void modulus(Stack *stack);     // pops two numbers from stack and pushes the mo
 void is_equal(Stack *stack);    // pops two numbers from stack and pushes 1 if equal and 0 if not
 
 void is_greater_than(Stack *stack);     // pops two numbers from stack and pushes 1 if greater than and 0 if not
+
+char **cjump(Stack *stack, char** program); // pops two numbers. if the second number is not `0` the program jumps by the first number.
 
 #endif 
