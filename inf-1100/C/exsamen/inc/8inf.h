@@ -13,8 +13,6 @@ void push(Stack *stack, char*value); // adds to top of stack
 
 char *top(Stack *stack);  // returns value on tho of stack
 
-void print_top(Stack *stack);
-
 void dup(Stack *stack); // pushes a duplicate of the top of the stack
 
 void swap(Stack *stack);    // swaps the two top numbers of stakk

@@ -1,8 +1,8 @@
-#include "8inf.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "inc/8inf.h"
 #include "inc/lexer_preprocessor.h"
 
 char **program;
@@ -85,8 +85,7 @@ void sum(Stack *stack) { // pops two numbers from the stack and pushes the sum
   push(stack, buffer);
 }
 
-void differance(
-    Stack *stack) { // pops two nummbers from stack and pushes the diferance
+void differance(Stack *stack) { // pops two nummbers from stack and pushes the diferance
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
 
@@ -96,8 +95,7 @@ void differance(
   push(stack, buffer);
 }
 
-void multible(
-    Stack *stack) { // pops two numbers from stack and pushes the multible
+void multible(Stack *stack) { // pops two numbers from stack and pushes the multible
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
   char buffer[100];
@@ -106,8 +104,7 @@ void multible(
   push(stack, buffer);
 }
 
-void quotient(
-    Stack *stack) { // pops two numbers from stack and pushes the quotient
+void quotient(Stack *stack) { // pops two numbers from stack and pushes the quotient
   float b = atoi(pop(stack));
   float a = atoi(pop(stack));
   char buffer[100];
@@ -116,8 +113,7 @@ void quotient(
   push(stack, buffer);
 }
 
-void modulus(
-    Stack *stack) { // pops two numbers from stack and pushes the modelus
+void modulus(Stack *stack) { // pops two numbers from stack and pushes the modelus
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
   char buffer[100];
@@ -156,8 +152,7 @@ void is_greater_than(Stack *stack) { // pops two numbers from stack and pushes 1
   push(stack, buffer);
 }
 
-char **cjump(Stack *stack,
-             char **program) { // pops two numbers. if the second number is not
+char **cjump(Stack *stack, char **program) { // pops two numbers. if the second number is not
                                // `0` the program jumps by the first number
   int first = atoi(pop(stack));
   int second = atoi(pop(stack));
