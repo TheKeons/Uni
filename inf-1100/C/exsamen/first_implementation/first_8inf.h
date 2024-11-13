@@ -4,15 +4,14 @@
 struct stack;
 typedef struct stack Stack;
 
-struct Stack_Element;
-typedef struct Stack_Element stack_element_t;
-
 
 // stack operations
 
-stack_element_t pop(Stack *stack); // returns the top of stack and removes it from stack
+char *pop(Stack *stack); // returns the top of stack and removes it from stack
 
-void push(Stack *stack, stack_element_t value); // adds to top of stack
+void push(Stack *stack, char*value); // adds to top of stack
+
+char *top(Stack *stack);  // returns value on tho of stack
 
 void dup(Stack *stack); // pushes a duplicate of the top of the stack
 
@@ -22,6 +21,7 @@ int is_full(Stack *stack);  // is the stack full
 
 int is_empty(Stack *stack); // is the stack full
 
+void initialize(Stack *stack);  // initialize the stack
 
 // 8INF operations
 

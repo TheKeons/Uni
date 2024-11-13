@@ -11,7 +11,7 @@ class Celestial_body:
         self.typ = typ
         self.colour = colour
         self.turtle = turtle
-        self.dt = 500
+        self.dt = 1000
 
     def force(self, other_himmellegeme) -> list[float]:
         # bruker newtons gravitasjons lov til å beregne kraft vektor

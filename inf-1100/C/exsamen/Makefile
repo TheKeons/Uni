@@ -11,4 +11,7 @@ FLAGS := -g -Wall -Wextra
 clean:
 	rm 8inf
 
+first:
+	gcc $(FLAGS) -Iinc first_implementation/first_8inf.c $(SRC) -o 8inf
+
 .PHONY: clean

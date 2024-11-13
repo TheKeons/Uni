@@ -1,55 +1,53 @@
+#include "inc/8inf.h"
+#include "inc/lexer_preprocessor.h"
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "inc/8inf.h"
-#include "inc/lexer_preprocessor.h"
-
 char **program;
 
+typedef enum { INT_TYPE, STRING_TYPE } DataType;
+
+struct Stack_Element {
+  DataType type; // type data
+
+  union {
+    int Integer;
+    char *String;
+  } data;
+};
+
 struct stack {
-  char *arr[MAXWORDS];
   int top_index;
+  stack_element_t arr[MAXWORDS];
 };
 
 // Stack functions
+int is_full(Stack *stack) { return (stack->top_index == (MAXWORDS - 1)); }
 
-void initialize(Stack *stack) { stack->top_index = -1; }
+int is_empty(Stack *stack) { return (stack->top_index <= -1); }
 
-int is_full(Stack *stack) {
-  if (stack->top_index == (MAXWORDS - 1)) {
-    return 1;
-  } else {
-    return 0;
-  }
-}
-
-int is_empty(Stack *stack) {
-  if (stack->top_index <= -1) {
-    return 1;
-  } else {
-    return 0;
-  }
-}
-
-char *top(Stack *stack) { return stack->arr[stack->top_index]; }
-
-char *pop(Stack *stack) {
+stack_element_t pop(Stack *stack) {
   if (is_empty(stack)) {
-    printf("Stack underflow\n");
+    // error handling
+    fprintf(stderr, "Stack Underflow: file: %s line: %d\n", __FILE__, __LINE__);
+    exit(EXIT_FAILURE);
+  } else {
+    stack_element_t top_value = stack->arr[stack->top_index]; // get the vaule
+    stack->top_index = stack->top_index - 1; // moves the index down one
 
-    return NULL;
+    return top_value;
   }
-  char *top_value = top(stack);            // get the vaule
-  stack->top_index = stack->top_index - 1; // moves the index down one
-  return top_value;
 }
 
-void push(Stack *stack, char *value) {
+void push(Stack *stack, stack_element_t value) {
   if (is_full(stack)) {
-    printf("Stack overflow\n");
-    return;
+    // error handling
+    fprintf(stderr, "Stack Overflow: file: %s line: %d\n", __FILE__, __LINE__);
+    exit(EXIT_FAILURE);
   }
+
   //  moves the index up one and adds value to the stack
   stack->top_index = stack->top_index + 1;
   stack->arr[stack->top_index] = value;
@@ -57,14 +55,14 @@ void push(Stack *stack, char *value) {
 
 // duplicates the top value
 void dup(Stack *stack) {
-  char *top_value = top(stack);
+  stack_element_t top_value = stack->arr[stack->top_index];
   push(stack, top_value);
 }
 
 //  swaps the two top values
 void swap(Stack *stack) {
-  char *a = pop(stack);
-  char *b = pop(stack);
+  stack_element_t a = pop(stack);
+  stack_element_t b = pop(stack);
 
   push(stack, a);
   push(stack, b);
@@ -73,89 +71,97 @@ void swap(Stack *stack) {
 // 8inf functions
 
 void sum(Stack *stack) { // pops two numbers from the stack and pushes the sum
-  int b = atoi(pop(stack));
-  int a = atoi(pop(stack));
+  stack_element_t b = pop(stack);
+  stack_element_t a = pop(stack);
 
-  char buffer[500];
-  // for loop to work this buffer needs to be big enough, i have not found a
-  // better way of doing this other than guessing. there is no guarantee this
-  // will work for all 8inf programs
-
-  sprintf(buffer, "%d", (a + b));
-  push(stack, buffer);
+  stack_element_t result = {.type = INT_TYPE,
+                            .data.Integer = (a.data.Integer + b.data.Integer)};
+  push(stack, result);
 }
 
-void differance(Stack *stack) { // pops two nummbers from stack and pushes the diferance
-  int b = atoi(pop(stack));
-  int a = atoi(pop(stack));
+void differance(
+    Stack *stack) { // pops two nummbers from stack and pushes the diferance
+  stack_element_t b = pop(stack);
+  stack_element_t a = pop(stack);
 
-  char buffer[100];
-  sprintf(buffer, "%d", (a - b));
-
-  push(stack, buffer);
+  stack_element_t result = {.type = INT_TYPE,
+                            .data.Integer = (a.data.Integer - b.data.Integer)};
+  push(stack, result);
 }
 
-void multible(Stack *stack) { // pops two numbers from stack and pushes the multible
-  int b = atoi(pop(stack));
-  int a = atoi(pop(stack));
-  char buffer[100];
-  sprintf(buffer, "%d", (a * b));
+void multible(
+    Stack *stack) { // pops two numbers from stack and pushes the multible
+  stack_element_t b = pop(stack);
+  stack_element_t a = pop(stack);
 
-  push(stack, buffer);
+  stack_element_t result = {.type = INT_TYPE,
+                            .data.Integer = a.data.Integer * b.data.Integer};
+  push(stack, result);
 }
 
-void quotient(Stack *stack) { // pops two numbers from stack and pushes the quotient
-  float b = atoi(pop(stack));
-  float a = atoi(pop(stack));
-  char buffer[100];
-  sprintf(buffer, "%f", (a / b));
+void quotient(
+    Stack *stack) { // pops two numbers from stack and pushes the quotient
+  stack_element_t b = pop(stack);
+  stack_element_t a = pop(stack);
 
-  push(stack, buffer);
+  if (b.data.Integer != 0) {
+    stack_element_t result = {
+        .type = INT_TYPE, .data.Integer = (a.data.Integer / b.data.Integer)};
+    push(stack, result);
+  } else {
+    printf("Divison by zero");
+    return;
+  }
 }
 
-void modulus(Stack *stack) { // pops two numbers from stack and pushes the modelus
-  int b = atoi(pop(stack));
-  int a = atoi(pop(stack));
-  char buffer[100];
-  sprintf(buffer, "%d", (a % b));
+void modulus(
+    Stack *stack) { // pops two numbers from stack and pushes the modelus
+  stack_element_t b = pop(stack);
+  stack_element_t a = pop(stack);
 
-  push(stack, buffer);
+  if (b.data.Integer != 0) {
+    stack_element_t result = {
+        .type = INT_TYPE, .data.Integer = (a.data.Integer % b.data.Integer)};
+    push(stack, result);
+  } else {
+    printf("Divison by zero");
+    return;
+  }
 }
 
 void is_equal(Stack *stack) { // pops two numbers from stack and pushes 1 if
                               // equal and 0 if not
-  int b = atoi(pop(stack));
-  int a = atoi(pop(stack));
-  char buffer[100];
+  stack_element_t b = pop(stack);
+  stack_element_t a = pop(stack);
 
-  if (a == b) {
-    sprintf(buffer, "%d", 1);
+  if (a.data.Integer == b.data.Integer) {
+    stack_element_t result = {.type = INT_TYPE, .data.Integer = 1};
+    push(stack, result);
   } else {
-    sprintf(buffer, "%d", 0);
+    stack_element_t result = {.type = INT_TYPE, .data.Integer = 0};
+    push(stack, result);
   }
-
-  push(stack, buffer);
 }
 
 void is_greater_than(Stack *stack) { // pops two numbers from stack and pushes 1
                                      // if greater than and 0 if not
-  int b = atoi(pop(stack));
-  int a = atoi(pop(stack));
-  char buffer[100]; // for some reason if i put the buffer any less than 41 it
-                    // wont work
+  stack_element_t b = pop(stack);
+  stack_element_t a = pop(stack);
 
-  if (a > b) {
-    sprintf(buffer, "%d", 1);
+  if (a.data.Integer > b.data.Integer) {
+    stack_element_t result = {.type = INT_TYPE, .data.Integer = 1};
+    push(stack, result);
   } else {
-    sprintf(buffer, "%d", 0);
+    stack_element_t result = {.type = INT_TYPE, .data.Integer = 0};
+    push(stack, result);
   }
-  push(stack, buffer);
 }
 
-char **cjump(Stack *stack, char **program) { // pops two numbers. if the second number is not
+char **cjump(Stack *stack,
+             char **program) { // pops two numbers. if the second number is not
                                // `0` the program jumps by the first number
-  int first = atoi(pop(stack));
-  int second = atoi(pop(stack));
+  int first = pop(stack).data.Integer;
+  int second = pop(stack).data.Integer;
 
   if (second != 0) {
     // handles the jumping
@@ -167,22 +173,27 @@ char **cjump(Stack *stack, char **program) { // pops two numbers. if the second 
   return program;
 }
 
-int main(int argc, char **argv) {
-
-  if (argc < 2) {
-    printf("no program supplied\n");
+int is_valid_number(char *string) {
+  if (string == NULL || *string == '\0') {
     return 0;
   }
 
-  // creates the stack
-  Stack *stack = malloc(sizeof(Stack));
-  initialize(stack);
+  if (*string == '-') {
+    string++;
+  }
 
-  program = load_program(argv[1]);
+  while (*string) {
+    if (!isdigit(*string)) {
+      return 0;
+    }
+    string++;
+  }
 
-  // loops though the program
+  return 1;
+}
+
+void interpret(Stack *stack, char **program) {
   for (char **pc = program; *pc != NULL; pc++) {
-
     if (*pc[0] != '.') { // if the line is an integer
       char *string = *pc;
       int length = strlen(string);
@@ -191,9 +202,23 @@ int main(int argc, char **argv) {
         // removes the ~ from the string
         memmove(string, string + 1, length - 2);
         string[length - 2] = '\0';
+
+        stack_element_t result = {.type = STRING_TYPE, .data.String = string};
+        push(stack, result);
       }
 
-      push(stack, string);
+      else if (is_valid_number(string)) { // if string is purely numerical
+
+        stack_element_t number = {.type = INT_TYPE, .data.Integer = atoi(string)};
+        push(stack, number);
+      }
+
+      else {
+        // error handling incase pc is not a valid number
+        fprintf(stderr, "%s is not a number: file: %s line: %d\n", *pc, __FILE__,
+                __LINE__);
+        exit(EXIT_FAILURE);
+      }
     }
 
     // if soup for handeling the operatos
@@ -231,7 +256,14 @@ int main(int argc, char **argv) {
       }
 
       else if (strcmp(*pc, ".print") == 0) {
-        printf("%s", pop(stack));
+        stack_element_t top_value = pop(stack);
+
+        // Checks the type of the top value and prints the value
+        if (top_value.type == STRING_TYPE) {
+          printf("%s", top_value.data.String);
+        } else {
+          printf("%d", top_value.data.Integer);
+        }
       }
 
       else if (strcmp(*pc, ".swap") == 0) {
@@ -244,11 +276,31 @@ int main(int argc, char **argv) {
 
       else if (strcmp(*pc, ".cjump") == 0) {
         pc = cjump(stack, pc);
-      } else {
-        printf("Unknow operator\n");
+      } 
+      
+      else {
+        printf("%s Unknow operator\n", *pc);
       }
     }
   }
+}
 
+int main(int argc, char **argv) {
+
+  if (argc < 2) {
+    printf("no program supplied\n");
+    return 0;
+  }
+
+  // creates the stack
+  Stack *stack = malloc(sizeof(Stack));
+  stack->top_index = -1;
+
+  program = load_program(argv[1]);
+
+  interpret(stack, program);
+  
+  free(stack);
+  stack = NULL; // to avoid a dangling pointer
   return 0;
 }
