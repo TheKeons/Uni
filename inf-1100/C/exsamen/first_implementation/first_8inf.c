@@ -76,7 +76,7 @@ void sum(Stack *stack) { // pops two numbers from the stack and pushes the sum
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
 
-  char buffer[500];
+  char buffer[5000];
   // for loop to work this buffer needs to be big enough, i have not found a
   // better way of doing this other than guessing. there is no guarantee this
   // will work for all 8inf programs
@@ -89,7 +89,7 @@ void differance(Stack *stack) { // pops two nummbers from stack and pushes the d
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
 
-  char buffer[100];
+  char buffer[1000];
   sprintf(buffer, "%d", (a - b));
 
   push(stack, buffer);
@@ -98,7 +98,7 @@ void differance(Stack *stack) { // pops two nummbers from stack and pushes the d
 void multible(Stack *stack) { // pops two numbers from stack and pushes the multible
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
-  char buffer[100];
+  char buffer[1000];
   sprintf(buffer, "%d", (a * b));
 
   push(stack, buffer);
@@ -107,7 +107,7 @@ void multible(Stack *stack) { // pops two numbers from stack and pushes the mult
 void quotient(Stack *stack) { // pops two numbers from stack and pushes the quotient
   float b = atoi(pop(stack));
   float a = atoi(pop(stack));
-  char buffer[100];
+  char buffer[1000];
   sprintf(buffer, "%f", (a / b));
 
   push(stack, buffer);
@@ -116,7 +116,7 @@ void quotient(Stack *stack) { // pops two numbers from stack and pushes the quot
 void modulus(Stack *stack) { // pops two numbers from stack and pushes the modelus
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
-  char buffer[100];
+  char buffer[1000];
   sprintf(buffer, "%d", (a % b));
 
   push(stack, buffer);
@@ -126,7 +126,7 @@ void is_equal(Stack *stack) { // pops two numbers from stack and pushes 1 if
                               // equal and 0 if not
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
-  char buffer[100];
+  char buffer[1000];
 
   if (a == b) {
     sprintf(buffer, "%d", 1);
@@ -141,7 +141,7 @@ void is_greater_than(Stack *stack) { // pops two numbers from stack and pushes 1
                                      // if greater than and 0 if not
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
-  char buffer[100]; // for some reason if i put the buffer any less than 41 it
+  char buffer[1000]; // for some reason if i put the buffer any less than 41 it
                     // wont work
 
   if (a > b) {

@@ -41,4 +41,8 @@ void is_greater_than(Stack *stack);     // pops two numbers from stack and pushe
 
 char **cjump(Stack *stack, char** program); // pops two numbers. if the second number is not `0` the program jumps by the first number.
 
+// misc
+
+int is_valid_number(char *string);  // checks if a stirng is purely numerical
+
 #endif 
