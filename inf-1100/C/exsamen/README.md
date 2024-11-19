@@ -5,6 +5,10 @@
 * anything else is an integer
 * words are separated by spaces or newlines; tabs are NOT SUPPORTED
 
+## How to compile
+* make (for final implementation)
+* make first (for first implementation)
+
 ## Supported operations
 
 ### Operators on integers

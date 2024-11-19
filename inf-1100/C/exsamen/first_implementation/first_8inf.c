@@ -76,7 +76,7 @@ void sum(Stack *stack) { // pops two numbers from the stack and pushes the sum
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
 
-  char buffer[5000];
+  char buffer[6000];
   // for loop to work this buffer needs to be big enough, i have not found a
   // better way of doing this other than guessing. there is no guarantee this
   // will work for all 8inf programs
@@ -126,30 +126,25 @@ void is_equal(Stack *stack) { // pops two numbers from stack and pushes 1 if
                               // equal and 0 if not
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
-  char buffer[1000];
 
   if (a == b) {
-    sprintf(buffer, "%d", 1);
+    push(stack, "1");
   } else {
-    sprintf(buffer, "%d", 0);
-  }
+    push(stack, "0");
+    }
 
-  push(stack, buffer);
 }
 
 void is_greater_than(Stack *stack) { // pops two numbers from stack and pushes 1
                                      // if greater than and 0 if not
   int b = atoi(pop(stack));
   int a = atoi(pop(stack));
-  char buffer[1000]; // for some reason if i put the buffer any less than 41 it
-                    // wont work
 
   if (a > b) {
-    sprintf(buffer, "%d", 1);
+    push(stack, "1");
   } else {
-    sprintf(buffer, "%d", 0);
+    push(stack, "0");
   }
-  push(stack, buffer);
 }
 
 char **cjump(Stack *stack, char **program) { // pops two numbers. if the second number is not
