@@ -4,7 +4,7 @@
 # Commands
 CC = gcc
 EXE = wordfreq
-DEBUG = 1
+DEBUG = 0
 
 # Directories
 SRC_DIR = src

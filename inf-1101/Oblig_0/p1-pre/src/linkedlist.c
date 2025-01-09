@@ -47,10 +47,6 @@ list_t *list_create(cmp_fn cmpfn) {
 }
 
 void list_destroy(list_t *list, free_fn item_free) {
-    if (list == NULL || list->head == NULL) {
-        return; // No next node if the iterator or current node is invalid
-    }
-
     lnode_t *temp = list->head;
     lnode_t *prev = NULL;
 
@@ -188,7 +184,7 @@ void list_destroyiter(list_iter_t *iter) {
     free(iter);
 }
 
-// Written with help of ChatGPT
+// Error checking written with help of ChatGPT
 int list_hasnext(list_iter_t *iter) {
     if (iter == NULL || iter->node == NULL) {
         return 0; // No next node if the iterator or current node is invalid
@@ -201,7 +197,7 @@ void *list_next(list_iter_t *iter) {
         return NULL; // No next node if the iterator or current node is invalid
     }
 
-    void *item = iter->node->next->item;
+    void *item = iter->node->item;
     iter->node = iter->node->next;
     return item;
 }
@@ -299,11 +295,11 @@ void list_sort(list_t *list) {
     /* Recursively sort the list */
     list->head = mergesort_(list->head, list->cmpfn);
 
-    // /* Fix the tail and prev links */
-    // lnode_t *prev = NULL;
-    // for (lnode_t *n = list->head; n != NULL; n = n->next) {
-    //     n->prev = prev;
-    //     prev = n;
-    // }
-    // list->tail = prev;
+     /* Fix the tail and prev links */
+     lnode_t *prev = NULL;
+     for (lnode_t *n = list->head; n != NULL; n = n->next) {
+         n->prev = prev;
+         prev = n;
+     }
+     list->tail = prev;
 }
