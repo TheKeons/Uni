@@ -22,7 +22,7 @@ To test your list implementation, we have given you a word frequency application
 
 You can find the precode here. It consists of the following files:
 
-```
+```Text
 
 ├── p1-pre/
    ├── data/
@@ -53,7 +53,7 @@ Deliverables
 
 Submit your code as a .zip or tarball with the following signature: abc012-p1.zip were you replace the letters and numbers with your UiT Username. The zip file should contain the following folder structure:
 
-```
+```Text
 ├── abc012-p1/
    └── Makefile
    └── README.md

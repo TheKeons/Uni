@@ -47,13 +47,21 @@ list_t *list_create(cmp_fn cmpfn) {
 }
 
 void list_destroy(list_t *list, free_fn item_free) {
+    if (list == NULL || list->head == NULL) {
+        return; // No next node if the iterator or current node is invalid
+    }
+
     lnode_t *temp = list->head;
     lnode_t *prev = NULL;
 
     while (temp != NULL){
         prev = temp;
         temp = temp->next;
+        if (item_free){
+            item_free(prev->item);
+        }
         free(prev);
+   
     }
     free(list);
 }
@@ -67,15 +75,22 @@ int list_addfirst(list_t *list, void *item) {
 
     if (newNode == NULL){
         printf("Malloc failed %d", __LINE__);
-        return -1;
+        return EXIT_FAILURE;
     }
 
     newNode->item = item;
     
     newNode->next = list->head;
+    newNode->prev = NULL;
 
-    if (list->head != NULL){
+    if (list->head == NULL){
+        list->head = newNode;
+        list->tail = newNode;
+        newNode->next = NULL;
+    }
+    else {
         list->head->prev = newNode;
+        list->head = newNode;
     }
     list->length += 1;
     return 0;
@@ -86,58 +101,58 @@ int list_addlast(list_t *list, void *item) {
 
     if (newNode == NULL){
         printf("Malloc failed %d", __LINE__);
-        return -1;
+        return EXIT_FAILURE;
     }
 
     newNode->item = item;
+    newNode->next = NULL;
 
-    lnode_t *temp = list->head;
-
-    if (temp == NULL){   // if empty list
+    if (list->tail == NULL){    // if list empty
         list->head = newNode;
-        newNode->next = NULL;
-        return 0;
+        list->tail = newNode;
+    }   
+    else {
+        list->tail->next = newNode;
+        newNode->prev = list->tail;
+        list->tail = newNode;
     }
+    list->length += 1;
+    return 0;
 
-    while (temp != NULL) {
-        if (temp->next == NULL){
-            temp->next = newNode;
-            newNode->next = NULL;
-            newNode->prev = temp;
-            list->length += 1;
-            return 0;
-        }
-        temp = temp->next;
-    }
 }
 
 void *list_popfirst(list_t *list) { // memory leak fix pls
     if (list->head == NULL){
-        printf(stderr, "PANIC PANIC, list empty: file: %s line: %d\n", __FILE__, __LINE__);
+        fprintf(stderr, "PANIC PANIC, list empty: file: %s line: %d\n", __FILE__, __LINE__);
         exit(EXIT_FAILURE);
     }
 
-    lnode_t *popped = list->head;
+    void *popped_item = list->head->item;
+    lnode_t *old_head = list->head;
     list->head = list->head->next;
-    list->head->prev = NULL;
-    return popped->item;
+
+    if (list->head != NULL){    // if list not empty
+        list->head->prev = NULL;
+    }
+    else {
+        list->tail = NULL;
+    }
+    list->length -= 1;
+    free(old_head);
+    return popped_item;
 }
 
 void *list_poplast(list_t *list) {
     if (list->head == NULL){
-        printf(stderr, "PANIC PANIC, list empty: file: %s line: %d\n", __FILE__, __LINE__);
+        fprintf(stderr, "PANIC PANIC, list empty: file: %s line: %d\n", __FILE__, __LINE__);
         exit(EXIT_FAILURE);
     }
 
-    lnode_t *temp = list->head;
-    lnode_t *prev = NULL;
-
-    while (temp != NULL){
-        if (temp->next == NULL){
-            prev->next = NULL;
-            return temp->item;
-        }
-    }
+    void *popped_item = list->tail->item;
+    free(list->tail);
+    list->tail = list->tail->prev;
+    list->length -= 1;
+    return popped_item;
 }
 
 int list_contains(list_t *list, void *item) {
@@ -145,7 +160,7 @@ int list_contains(list_t *list, void *item) {
 
     while (temp != NULL)
     {
-        if (temp->item == item){
+        if (list->cmpfn(temp->item, item)){
             return 1;
         }
         temp = temp->next;
@@ -164,7 +179,7 @@ list_iter_t *list_createiter(list_t *list) {
         return NULL;
     }
 
-    iter->node = NULL;
+    iter->node = list->head;
     iter->list = list;
     return iter;
 }
@@ -173,19 +188,26 @@ void list_destroyiter(list_iter_t *iter) {
     free(iter);
 }
 
+// Written with help of ChatGPT
 int list_hasnext(list_iter_t *iter) {
-    if (iter->node->next == NULL){
-        return 0;
+    if (iter == NULL || iter->node == NULL) {
+        return 0; // No next node if the iterator or current node is invalid
     }
-    return 1;
+    return iter->node->next != NULL;
 }
 
 void *list_next(list_iter_t *iter) {
+    if (iter == NULL || iter->node == NULL) {
+        return NULL; // No next node if the iterator or current node is invalid
+    }
 
+    void *item = iter->node->next->item;
+    iter->node = iter->node->next;
+    return item;
 }
 
 void list_resetiter(list_iter_t *iter) {
-
+    iter->node = iter->list->head;
 }
 
 
