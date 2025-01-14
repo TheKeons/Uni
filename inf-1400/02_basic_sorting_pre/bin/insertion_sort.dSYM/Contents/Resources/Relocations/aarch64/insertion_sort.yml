@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     'bin/insertion_sort'
+relocations:     []
+...

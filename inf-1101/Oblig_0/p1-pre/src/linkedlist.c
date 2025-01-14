@@ -50,16 +50,14 @@ void list_destroy(list_t *list, free_fn item_free) {
     lnode_t *temp = list->head;
     lnode_t *prev = NULL;
 
-    while (temp != NULL){
+    while (temp != NULL){   // Goes through the list and frees the nodes and their item
         prev = temp;
         temp = temp->next;
-        if (item_free){
-            item_free(prev->item);
-        }
+        item_free(prev->item);    
         free(prev);
    
     }
-    free(list);
+    free(list); 
 }
 
 size_t list_length(list_t *list) {
@@ -79,7 +77,7 @@ int list_addfirst(list_t *list, void *item) {
     newNode->next = list->head;
     newNode->prev = NULL;
 
-    if (list->head == NULL){
+    if (list->head == NULL){    // if empty list
         list->head = newNode;
         list->tail = newNode;
         newNode->next = NULL;
@@ -117,7 +115,7 @@ int list_addlast(list_t *list, void *item) {
 
 }
 
-void *list_popfirst(list_t *list) { // memory leak fix pls
+void *list_popfirst(list_t *list) { 
     if (list->head == NULL){
         fprintf(stderr, "PANIC PANIC, list empty: file: %s line: %d\n", __FILE__, __LINE__);
         exit(EXIT_FAILURE);
@@ -154,8 +152,7 @@ void *list_poplast(list_t *list) {
 int list_contains(list_t *list, void *item) {
     lnode_t *temp = list->head; 
 
-    while (temp != NULL)
-    {
+    while (temp != NULL) {
         if (list->cmpfn(temp->item, item)){
             return 1;
         }
